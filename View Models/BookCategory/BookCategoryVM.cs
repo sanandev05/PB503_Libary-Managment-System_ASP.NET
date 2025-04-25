@@ -1,0 +1,13 @@
+﻿using PB503_Libary_Managment_System_ASP.NET.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategory
+{
+	public class BookCategoryVM : BaseEntityVM
+	{
+
+		public string Name { get; set; }
+		public string Description { get; set; }
+		public List<Book> Books { get; set; }
+	}
+}
