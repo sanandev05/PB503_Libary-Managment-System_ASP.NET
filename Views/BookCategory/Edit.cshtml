@@ -1,0 +1,24 @@
+﻿@model BookCategoryEditVM
+@{
+	ViewData["Title"] = "Edit Book Category";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit Book Category</h1>
+
+<form asp-action="edit" method="post" style="width:500px;">
+	<input type="hidden" name="ID" asp-for=ID/>
+	<div class="form-group" style="width:500px; margin: 2rem;">
+		<label for="Name" >Name</label>
+		<input type="text" asp-for=Name style="width:500px;" />
+		<span class="text-danger" asp-validation-for=Name style="width:500px;"></span>
+	</div>
+
+	<div class="form-group" style="width:500px; margin: 2rem;">
+		<label for="Description" style="width:500px;">Description</label>
+		<textarea type="text" asp-for=Description style="width:500px;"></textarea>
+		<span class="text-danger" asp-validation-for=Description style="width:500px;"></span>
+	</div>
+
+	<button type="submit" class="btn btn-primary" style="margin: 2rem;">Edit</button>
+</form>
