@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialMigration : Migration
+    public partial class InitalizeDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,6 +42,22 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BookCategories", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookCategoryVM",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookCategoryVM", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,6 +115,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     PublisherId = table.Column<int>(type: "int", nullable: false),
+                    BookCategoryVMID = table.Column<int>(type: "int", nullable: true),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -112,6 +129,11 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                         principalTable: "BookCategories",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Books_BookCategoryVM_BookCategoryVMID",
+                        column: x => x.BookCategoryVMID,
+                        principalTable: "BookCategoryVM",
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Books_Publishers_PublisherId",
                         column: x => x.PublisherId,
@@ -156,6 +178,11 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Books_BookCategoryVMID",
+                table: "Books",
+                column: "BookCategoryVMID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Books_CategoryId",
                 table: "Books",
                 column: "CategoryId");
@@ -183,6 +210,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 
             migrationBuilder.DropTable(
                 name: "BookCategories");
+
+            migrationBuilder.DropTable(
+                name: "BookCategoryVM");
 
             migrationBuilder.DropTable(
                 name: "Publishers");

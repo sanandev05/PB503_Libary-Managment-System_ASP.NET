@@ -115,6 +115,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
+                    b.Property<int?>("BookCategoryVMID")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -142,6 +145,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BookCategoryVMID");
 
                     b.HasIndex("CategoryId");
 
@@ -224,6 +229,33 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                     b.ToTable("Publishers");
                 });
 
+            modelBuilder.Entity("PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategory.BookCategoryVM", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("BookCategoryVM");
+                });
+
             modelBuilder.Entity("AuthorBook", b =>
                 {
                     b.HasOne("PB503_Libary_Managment_System_ASP.NET.Models.Author", null)
@@ -252,6 +284,10 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 
             modelBuilder.Entity("PB503_Libary_Managment_System_ASP.NET.Models.Book", b =>
                 {
+                    b.HasOne("PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategory.BookCategoryVM", null)
+                        .WithMany("Books")
+                        .HasForeignKey("BookCategoryVMID");
+
                     b.HasOne("PB503_Libary_Managment_System_ASP.NET.Models.BookCategory", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
@@ -281,6 +317,11 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                 });
 
             modelBuilder.Entity("PB503_Libary_Managment_System_ASP.NET.Models.Publisher", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategory.BookCategoryVM", b =>
                 {
                     b.Navigation("Books");
                 });

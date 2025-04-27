@@ -38,6 +38,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 		{
 			if(!ModelState.IsValid)
 			{
+				TempData["Error"] = "Input is not valid";
 				return View(model);
 			}
 
@@ -52,8 +53,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 			};
 			await _db.BookCategories.AddAsync(bookCategory);
 			await _db.SaveChangesAsync();
+            TempData["Success"] = "Is Working";
 
-			return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
 		}
 
 		[HttpGet]
@@ -79,7 +81,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				return View(model);
+                TempData["Error"] = "Input is not valid";
+                return View(model);
 			}
 			var bookCategory = await _db.BookCategories.FindAsync(model.ID);
 			if (bookCategory == null)
@@ -91,7 +94,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 			bookCategory.UpdatedDate = DateTime.Now;
 			bookCategory.Books = model.Books;
 			await _db.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
+            TempData["Success"] = "Datas successfully modified";
+
+            return RedirectToAction(nameof(Index));
 		}
 		[HttpGet]
 		public IActionResult Details(int id)
@@ -139,6 +144,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 			bookCategory.isDeleted = true;
             bookCategory.UpdatedDate = DateTime.Now;
             await _db.SaveChangesAsync();
+            TempData["Success"] = "Row is successfully deleted !";
+
             return RedirectToAction(nameof(Index));
         }
     }

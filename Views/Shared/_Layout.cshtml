@@ -19,6 +19,9 @@
 
     <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+   
 </head>
 <body>
 
@@ -32,11 +35,43 @@
     <footer class="sticky-footer bg-white">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2021</span>
+                <span>Copyright &copy; Sanan Huseynov 2025</span>
             </div>
         </div>
     </footer>
     <!-- End of Footer -->
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        @if (TempData["Success"] != null)
+        {
+            <text>
+                        toastr.success("@TempData["Success"]");
+            </text>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <text>
+                        toastr.error("@TempData["Error"]");
+            </text>
+        }
+        @if (TempData["Info"] != null)
+        {
+            <text>
+                        toastr.info("@TempData["Info"]");
+            </text>
+        }
+        @if (TempData["Warning"] != null)
+        {
+            <text>
+                        toastr.warning("@TempData["Warning"]");
+            </text>
+        }
+        });
+    </script>
 
 </body>
 </html>
