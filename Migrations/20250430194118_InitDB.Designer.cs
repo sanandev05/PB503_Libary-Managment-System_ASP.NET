@@ -12,8 +12,8 @@ using PB503_Libary_Managment_System_ASP.NET.Data;
 namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 {
     [DbContext(typeof(LibaryDbContext))]
-    [Migration("20250430120121_initDB")]
-    partial class initDB
+    [Migration("20250430194118_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -105,7 +105,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AuthorId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AuthorId] IS NOT NULL");
 
                     b.ToTable("AuthorsContacts");
                 });
@@ -246,9 +247,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                 {
                     b.HasOne("PB503_Libary_Managment_System_ASP.NET.Models.Author", "Author")
                         .WithOne("Contact")
-                        .HasForeignKey("PB503_Libary_Managment_System_ASP.NET.Models.AuthorContact", "AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PB503_Libary_Managment_System_ASP.NET.Models.AuthorContact", "AuthorId");
 
                     b.Navigation("Author");
                 });

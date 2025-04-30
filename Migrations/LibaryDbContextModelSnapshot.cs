@@ -77,7 +77,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -102,7 +102,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AuthorId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[AuthorId] IS NOT NULL");
 
                     b.ToTable("AuthorsContacts");
                 });
@@ -243,9 +244,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                 {
                     b.HasOne("PB503_Libary_Managment_System_ASP.NET.Models.Author", "Author")
                         .WithOne("Contact")
-                        .HasForeignKey("PB503_Libary_Managment_System_ASP.NET.Models.AuthorContact", "AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PB503_Libary_Managment_System_ASP.NET.Models.AuthorContact", "AuthorId");
 
                     b.Navigation("Author");
                 });

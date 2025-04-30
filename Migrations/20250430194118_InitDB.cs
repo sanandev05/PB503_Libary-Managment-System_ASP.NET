@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 {
     /// <inheritdoc />
-    public partial class initDB : Migration
+    public partial class InitDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: true),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -84,8 +84,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                         name: "FK_AuthorsContacts_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -153,7 +152,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.Migrations
                 name: "IX_AuthorsContacts_AuthorId",
                 table: "AuthorsContacts",
                 column: "AuthorId",
-                unique: true);
+                unique: true,
+                filter: "[AuthorId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_CategoryId",

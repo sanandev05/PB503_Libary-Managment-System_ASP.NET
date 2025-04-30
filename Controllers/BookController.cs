@@ -38,51 +38,36 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         }
         public IActionResult Create()
         {
-            ViewBag.CategoryID = new SelectList(_db.BookCategories.Where(item => !item.isDeleted).ToList(), "ID", "Name");
-            ViewBag.PublisherID = new SelectList(_db.Publishers.Where(item => !item.isDeleted).ToList(), "ID", "Name");
-            ViewBag.AuthorIDs = new SelectList(_db.Authors.Where(item => !item.isDeleted).ToList(), "ID", "FullName");
+            ViewData["CategoryId"] = new SelectList(_db.BookCategories, "ID", "Description");
+            ViewData["PublisherId"] = new SelectList(_db.Publishers, "ID", "Name");
+            ViewData["AuthorIds"] = new SelectList(_db.BookCategories, "ID", "Description");
+           
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BookCreateVM model)
+        public async Task<IActionResult> Create([Bind("Title,PublicationYear,Price,CategoryId,PublisherId,AuthorIds")] BookCreateVM model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                TempData["Error"] = "Input is not valid";
-                return View(model);
+                _db.Add(model);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_db.BookCategories, "ID", "Description", model.CategoryId);
+            ViewData["PublisherId"] = new SelectList(_db.Publishers, "ID", "Name", model.PublisherId);
+            ViewData["AuthorIds"] = new SelectList(_db.Authors, "ID", "FullName", model.AuthorIds);
 
-            BookCategory category =  _db.BookCategories.Find(model.CategoryId);
-            Publisher publisher =  _db.Publishers.Find(model.PublisherId);
-
-            List<Author> authors = new List<Author>();
-
-            foreach (var authorId in model.AuthorIds)
-            {
-                var author = await _db.Authors.FindAsync(authorId);
-                if (author != null)
-                {
-                    authors.Add(author);
-                }
-            }
-            var book = new Book()
+            var book =new Book()
             {
                 Title = model.Title,
+                PublicationYear = model.PublicationYear,
+                Price = model.Price,
+                CategoryId = model.CategoryId,
+                PublisherId = model.PublisherId,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                Category = category,
-                Publisher = publisher,
-                Authors = authors,
-                CategoryId = model.CategoryId,
-                Price = model.Price,
-                isDeleted = false,
-
-                PublicationYear = model.PublicationYear,
-                PublisherId = model.PublisherId,
-                ID = model.ID,
-
             };
             await _db.Books.AddAsync(book);
             await _db.SaveChangesAsync();
