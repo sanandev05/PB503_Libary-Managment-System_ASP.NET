@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PB503_Libary_Managment_System_ASP.NET.Data;
 using PB503_Libary_Managment_System_ASP.NET.Models;
-using PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategory;
+using PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategoryVM;
 
 namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 {

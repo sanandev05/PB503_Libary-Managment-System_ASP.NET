@@ -1,8 +1,7 @@
-﻿@model List<PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategoryVM.BookCategoryVM>
+﻿@model List<PB503_Libary_Managment_System_ASP.NET.View_Models.AuthorVM.AuthorVM>
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -14,10 +13,7 @@
     <thead>
         <tr>
             <th>
-                Name
-            </th>
-            <th>
-                Description
+                Fullname
             </th>
             <th>
                 CreatedDate
@@ -32,10 +28,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
