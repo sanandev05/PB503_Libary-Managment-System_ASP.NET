@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PB503_Libary_Managment_System_ASP.NET.Data;
 using PB503_Libary_Managment_System_ASP.NET.Models;
@@ -37,6 +38,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         }
         public IActionResult Create()
         {
+            ViewBag.CategoryID = new SelectList(_db.BookCategories.Where(item => !item.isDeleted).ToList(), "ID", "Name");
+            ViewBag.PublisherID = new SelectList(_db.Publishers.Where(item => !item.isDeleted).ToList(), "ID", "Name");
+            ViewBag.AuthorIDs = new SelectList(_db.Authors.Where(item => !item.isDeleted).ToList(), "ID", "FullName");
             return View();
         }
 
@@ -50,17 +54,35 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 return View(model);
             }
 
+            BookCategory category =  _db.BookCategories.Find(model.CategoryId);
+            Publisher publisher =  _db.Publishers.Find(model.PublisherId);
+
+            List<Author> authors = new List<Author>();
+
+            foreach (var authorId in model.AuthorIds)
+            {
+                var author = await _db.Authors.FindAsync(authorId);
+                if (author != null)
+                {
+                    authors.Add(author);
+                }
+            }
             var book = new Book()
             {
                 Title = model.Title,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                Category = model.Category,
-                Publisher = model.Publisher,
-                Authors = model.Authors,
+                Category = category,
+                Publisher = publisher,
+                Authors = authors,
                 CategoryId = model.CategoryId,
                 Price = model.Price,
                 isDeleted = false,
+
+                PublicationYear = model.PublicationYear,
+                PublisherId = model.PublisherId,
+                ID = model.ID,
+
             };
             await _db.Books.AddAsync(book);
             await _db.SaveChangesAsync();
@@ -100,9 +122,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
             {
                 return NotFound();
             }
-			book.Publisher = model.Publisher;
-			book.Authors = model.Authors;
-			book.Title = model.Title;
+            book.Publisher = model.Publisher;
+            book.Authors = model.Authors;
+            book.Title = model.Title;
             book.PublicationYear = model.PublicationYear;
             book.Price = model.Price;
             book.CategoryId = model.CategoryId;

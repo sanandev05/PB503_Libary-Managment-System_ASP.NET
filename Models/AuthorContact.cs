@@ -15,7 +15,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Models
 		[StringLength(100)]
 		public string Email { get; set; }
 
-		public int AuthorId { get; set; }
-		public Author Author { get; set; }
+		public int? AuthorId { get; set; }
+		public Author? Author { get; set; }
 	}
 }

@@ -12,8 +12,8 @@ using PB503_Libary_Managment_System_ASP.NET.Data;
 namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 {
     [DbContext(typeof(LibaryDbContext))]
-    [Migration("20250429184323_InitDB")]
-    partial class InitDB
+    [Migration("20250430120121_initDB")]
+    partial class initDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

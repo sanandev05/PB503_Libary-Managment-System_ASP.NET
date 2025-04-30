@@ -11,6 +11,6 @@ namespace PB503_Libary_Managment_System_ASP.NET.Models
     
 
         public  AuthorContact Contact { get; set; }
-		public  List<Book> Books { get; set; }
+		public  List<Book>? Books { get; set; }
 	}
 }

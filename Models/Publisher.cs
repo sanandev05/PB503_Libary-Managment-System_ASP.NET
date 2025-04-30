@@ -17,6 +17,6 @@ namespace PB503_Libary_Managment_System_ASP.NET.Models
 		[StringLength(100)]
 		public string Email { get; set; }
 
-		public List<Book> Books { get; set; }
+		public List<Book>? Books { get; set; }
 	}
 }

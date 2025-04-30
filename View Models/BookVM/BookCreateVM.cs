@@ -16,6 +16,8 @@ namespace PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM
 		public int PublisherId { get; set; }
 		public Publisher Publisher { get; set; }
 
-		public List<Author> Authors { get; set; }
+		public List<int> AuthorIds { get; set; }
+        public List<Author> Authors { get; set; }
+
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PB503_Libary_Managment_System_ASP.NET.Data;
 using PB503_Libary_Managment_System_ASP.NET.Models;
@@ -31,6 +32,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         }
         public IActionResult Create()
         {
+            ViewBag.BookIDs = new SelectList(_db.Books.Where(item => !item.isDeleted).ToList(), "ID", "Title");
             return View();
         }
 
@@ -38,22 +40,44 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AuthorCreateVM model)
         {
+            ViewBag.BookIDs = new SelectList(_db.Books.Where(item => !item.isDeleted).ToList(), "ID", "Title");
+
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Input is not valid";
                 return View(model);
             }
 
+         
             var author = new Author()
             {
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                Contact = model.Contact,
-                Books = model.Books,
-                FullName = model.FullName
+                //Contact = contact,
+                //Books = model.Books,
+                FullName = model.FullName,
+                //isDeleted = false,
+                //ID =(int) contact.AuthorId,
             };
             await _db.Authors.AddAsync(author);
             await _db.SaveChangesAsync();
+            AuthorContact contact = new AuthorContact()
+            {
+
+                Phone = model.ContactCreateVM.Phone,
+                //ID = model.ID+10,
+                Address = model.ContactCreateVM.Address,
+                // Author = model.ContactCreateVM.Author,
+                AuthorId = author.ID,
+                Email = model.ContactCreateVM.Email,
+
+
+            };
+
+         //   Console.WriteLine("Author ID: " + author.ID);
+            await _db.AuthorsContacts.AddAsync(contact);
+            await _db.SaveChangesAsync();
+          
             TempData["Success"] = "Is Working";
 
             return RedirectToAction(nameof(Index));
@@ -91,7 +115,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
             {
                 return NotFound();
             }
-            
+
             bookCategory.UpdatedDate = DateTime.Now;
             bookCategory.FullName = model.FullName;
             bookCategory.Contact = model.Contact;
