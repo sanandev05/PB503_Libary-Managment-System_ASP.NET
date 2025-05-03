@@ -1,20 +1,51 @@
-﻿@model PB503_Libary_Managment_System_ASP.NET.View_Models.AuthorVM.AuthorVM
+﻿@model PB503_Libary_Managment_System_ASP.NET.Models.Book
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>AuthorVM</h4>
+    <h4>Book</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
+            @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicationYear)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PublicationYear)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Publisher.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.isDeleted)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.isDeleted)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedDate)

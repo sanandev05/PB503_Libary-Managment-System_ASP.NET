@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PB503_Libary_Managment_System_ASP.NET.Data;
 using PB503_Libary_Managment_System_ASP.NET.Models;
 using PB503_Libary_Managment_System_ASP.NET.View_Models.BookCategoryVM;
 using PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PB503_Libary_Managment_System_ASP.NET.Controllers
 {
@@ -17,7 +22,10 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var getDatas = await _db.Books.Where(item => !item.isDeleted).ToListAsync();
+            var getDatas = await _db.Books.Where(item => !item.isDeleted).Include(x => x.Authors)
+            .Include(x => x.Publisher)
+            .Include(x => x.Category)
+            .ToListAsync();
             var mapToVM = getDatas.Select(item => new BookVM()
             {
                 ID = item.ID,
@@ -25,41 +33,78 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 UpdatedDate = item.UpdatedDate,
                 Title = item.Title,
                 Authors = item.Authors,
-                Publisher = item.Publisher,
-                CategoryId = item.ID,
                 Category = item.Category,
-                PublisherId = item.ID,
                 Price = item.ID,
                 PublicationYear = item.ID,
-
-
+                Publisher = item.Publisher,
+                AuthorIds = item.Authors.Select(x => x.ID).ToList(),
+                CategoryId = item.CategoryId,
+                PublisherId = item.PublisherId,
             }).ToList();
             return View(mapToVM);
         }
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_db.BookCategories, "ID", "Description");
-            ViewData["PublisherId"] = new SelectList(_db.Publishers, "ID", "Name");
-            ViewData["AuthorIds"] = new SelectList(_db.BookCategories, "ID", "Description");
-           
+            ViewBag.CategoryId = new SelectList(_db.BookCategories.Where(x=>!x.isDeleted).ToList(), "ID", "Description");
+            ViewBag.AuthorIds = new  MultiSelectList(_db.Authors.Where(x=>!x.isDeleted).ToList(), "ID", "FullName");
+            ViewBag.PublisherId = new SelectList(_db.Publishers.Where(x=>!x.isDeleted).ToList(), "ID", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,PublicationYear,Price,CategoryId,PublisherId,AuthorIds")] BookCreateVM model)
+        public async Task<IActionResult> Create( BookCreateVM model)
         {
+           
             if (ModelState.IsValid)
             {
-                _db.Add(model);
+                var authors = new List<Author>();
+                foreach (var item in _db.Authors.AsNoTracking().Where(x => !x.isDeleted).ToList())
+                {
+                    foreach (var item2 in model.SelectedAuthorIds)
+                    {
+                        if (item.ID == item2)
+                        {
+                            authors.Add(item);
+                        }
+                    }
+                }
+                var books = new Book()
+                {
+                    Title = model.Title,
+                    PublicationYear = model.PublicationYear,
+                    Price = model.Price,
+                    PublisherId = model.PublisherId,
+                    CategoryId = model.CategoryId,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now,
+                    Publisher = model.Publisher,
+                    ID = model.ID,
+                    Authors =authors,
+                    Category = _db.BookCategories.Where(x=>!x.isDeleted).FirstOrDefault(x=>x.ID==model.CategoryId),
+                    
+                };
+
+                foreach (var authorId in model.SelectedAuthorIds)
+                {
+                    books.Authors.Add(new Author
+                    {
+                        ID = authorId,
+                        Books = new List<Book> { books }
+                    });
+                }
+      
+                _db.Add(books);
                 await _db.SaveChangesAsync();
+                TempData["Success"] = "Is Working";
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_db.BookCategories, "ID", "Description", model.CategoryId);
-            ViewData["PublisherId"] = new SelectList(_db.Publishers, "ID", "Name", model.PublisherId);
-            ViewData["AuthorIds"] = new SelectList(_db.Authors, "ID", "FullName", model.AuthorIds);
+            ViewBag.CategoryId = new SelectList(_db.BookCategories.Where(x => !x.isDeleted).ToList(), "ID", "Description");
+            ViewBag.AuthorIds = new MultiSelectList(_db.Authors.Where(x => !x.isDeleted).ToList(), "ID", "FullName");
+            ViewBag.PublisherId = new SelectList(_db.Publishers.Where(x => !x.isDeleted).ToList(), "ID", "Name");
 
-            var book =new Book()
+            var book = new Book()
             {
                 Title = model.Title,
                 PublicationYear = model.PublicationYear,
@@ -69,29 +114,21 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
             };
-            await _db.Books.AddAsync(book);
-            await _db.SaveChangesAsync();
-            TempData["Success"] = "Is Working";
+           
+            
+            TempData["Error"] = "Wrong Input";
 
-            return RedirectToAction(nameof(Index));
+            return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var bookCategory = await _db.BookCategories.FindAsync(id);
-            if (bookCategory == null)
-            {
-                return NotFound();
-            }
-            var model = new BookCategoryEditVM()
-            {
-                ID = bookCategory.ID,
-                Name = bookCategory.Name,
-                Description = bookCategory.Description,
-                Books = bookCategory.Books,
-            };
-            return View(model);
+            ViewBag.CategoryId = new SelectList(_db.BookCategories.Where(x => !x.isDeleted ), "ID", "Description");
+            ViewBag.PublisherId = new SelectList(_db.Publishers.Where(x => !x.isDeleted ), "ID", "Name");
+            ViewBag.AuthorIds = new MultiSelectList(_db.Authors.Where(x => !x.isDeleted ), "ID", "FullName");
+
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -100,6 +137,9 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Input is not valid";
+                ViewBag.CategoryId = new SelectList(_db.BookCategories.Where(x => !x.isDeleted), "ID", "Description");
+                ViewBag.PublisherId = new SelectList(_db.Publishers.Where(x => !x.isDeleted), "ID", "Name");
+                ViewBag.AuthorIds = new MultiSelectList(_db.Authors.Where(x => !x.isDeleted), "ID", "FullName");
                 return View(model);
             }
             var book = await _db.Books.FindAsync(model.ID);
@@ -107,13 +147,14 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
             {
                 return NotFound();
             }
+
             book.Publisher = model.Publisher;
             book.Authors = model.Authors;
             book.Title = model.Title;
             book.PublicationYear = model.PublicationYear;
             book.Price = model.Price;
             book.CategoryId = model.CategoryId;
-            book.Category = model.Category;
+            
             book.PublisherId = model.PublisherId;
             book.UpdatedDate = DateTime.Now;
             await _db.SaveChangesAsync();

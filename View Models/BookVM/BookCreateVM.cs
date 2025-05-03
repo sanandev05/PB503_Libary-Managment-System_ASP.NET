@@ -1,10 +1,12 @@
-﻿using PB503_Libary_Managment_System_ASP.NET.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using PB503_Libary_Managment_System_ASP.NET.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM
 {
     public class BookCreateVM
     {
+        public int ID { get; set; }
         [Required(ErrorMessage = "Title is required.")]
         public string Title { get; set; }
 
@@ -12,20 +14,18 @@ namespace PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM
         [Range(1900, 2025, ErrorMessage = "Publication year must be between 1900 and 2025.")]
         public int PublicationYear { get; set; }
 
-        [Required(ErrorMessage = "Price is required.")]
-        
+        [Required(ErrorMessage = "Price is required.")]       
         public decimal Price { get; set; }
 
-        [Required(ErrorMessage = "Category is required.")]
-        public int CategoryId { get; set; }
-        public BookCategory Category { get; set; }
 
-        [Required(ErrorMessage = "Publisher is required.")]
         public int PublisherId { get; set; }
-        public Publisher Publisher { get; set; }
+        public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = "At least one author must be selected.")]
-        public List<int> AuthorIds { get; set; }
-        public List<Author> Authors { get; set; }
+        public List<int>? AuthorIds { get; set; }
+
+        public List<int>? SelectedAuthorIds { get; set; } = new List<int>();
+        public List<Author> Authors { get; set; } = new List<Author>();
+        public List<BookCategory>? BookCategories { get; set; }
+        public Publisher? Publisher { get; set; }
     }
 }
