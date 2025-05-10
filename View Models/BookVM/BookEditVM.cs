@@ -20,10 +20,10 @@ namespace PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM
         public int PublisherId { get; set; }
         public int CategoryId { get; set; }
 
-        public List<int> AuthorIds { get; set; }
+        public List<int>? AuthorIds { get; set; }
 
-        public List<int> SelectedAuthorIds { get; set; } = new List<int>();
-        public List<Author> Authors { get; set; } = new List<Author>();
+        public List<int>? SelectedAuthorIds { get; set; } = new List<int>();
+        public List<Author>? Authors { get; set; } = new List<Author>();
         public List<BookCategory>? BookCategories { get; set; }
         public Publisher? Publisher { get; set; }
     }

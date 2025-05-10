@@ -16,7 +16,12 @@ namespace PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM
 
 		public decimal Price { get; set; }
 
-		[Required(ErrorMessage = "Category is required.")]
+		public string? ImageURL { get; set; }
+
+		[Required(ErrorMessage = "Image is required.")]
+        public IFormFile ImageFile { get; set; }
+
+        [Required(ErrorMessage = "Category is required.")]
 		public int CategoryId { get; set; }
 		public BookCategory Category { get; set; }
 

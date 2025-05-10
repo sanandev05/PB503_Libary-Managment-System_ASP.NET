@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PB503_Libary_Managment_System_ASP.NET.Data;
 
@@ -11,9 +12,11 @@ using PB503_Libary_Managment_System_ASP.NET.Data;
 namespace PB503_Libary_Managment_System_ASP.NET.Migrations
 {
     [DbContext(typeof(LibaryDbContext))]
-    partial class LibaryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250507093803_AddedImageURL")]
+    partial class AddedImageURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

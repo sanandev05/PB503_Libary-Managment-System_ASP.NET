@@ -20,5 +20,6 @@ namespace PB503_Libary_Managment_System_ASP.NET.Models
 		public  Publisher Publisher { get; set; }
 
 		public  List<Author> Authors { get; set; }
-	}
+		public string? ImageURL { get; set; }
+    }
 }

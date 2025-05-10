@@ -1,4 +1,4 @@
-﻿@model PB503_Libary_Managment_System_ASP.NET.Models.Book
+﻿@model PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM.BookVM
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +8,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Book</h4>
+    <h4>BookVM</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Category)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Description)
+            @Html.DisplayFor(model => model.Category.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Publisher)
@@ -42,10 +42,22 @@
             @Html.DisplayFor(model => model.Publisher.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.isDeleted)
+            @Html.DisplayNameFor(model => model.AuthorIds)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.isDeleted)
+           @foreach (var item in Model.Authors)
+            {
+                @if (Model.Authors.Count > 1)
+                {
+                    
+                        @Html.DisplayFor(modelItem => item.FullName) @:, <br />
+                    
+                }
+                else 
+                {
+                    @Html.DisplayFor(modelItem => item.FullName)
+                }
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedDate)

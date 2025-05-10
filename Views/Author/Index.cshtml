@@ -1,47 +1,86 @@
 ﻿@model List<PB503_Libary_Managment_System_ASP.NET.View_Models.AuthorVM.AuthorVM>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                Fullname
-            </th>
-            <th>
-                CreatedDate
-            </th>
-            <th>
-                UpdatedDate
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				Fullname
+			</th>
+			<th>
+				Contacts
+			</th>
+			<th>
+				Books
+			</th>
+			<th>
+				Address
+			</th>
+			<th>
+				Phone
+			</th>
+			<th>
+				Email
+			</th>
+		
+			<th>
+				UpdatedDate
+			</th>
+			<th>
+				CreatedDate
+			</th>
+			
+
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.FullName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Contact.Email)
+
+				</td>
+				<td>
+					
+						@foreach (var book in item.Books)
+						{
+							@book.Title <br /> @:
+						}
+			
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Contact.Address)
+					</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Contact.Phone)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Contact.Email)
+				</td>
+			
+				<td>
+					@Html.DisplayFor(modelItem => item.CreatedDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.UpdatedDate)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+					<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

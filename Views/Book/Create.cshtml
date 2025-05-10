@@ -1,53 +1,60 @@
 ﻿@model PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM.BookCreateVM
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create Book</h2>
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Title" class="control-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<label asp-for="Title" class="control-label"></label>
+		<input asp-for="Title" class="form-control" />
+		<span asp-validation-for="Title" class="text-danger"></span>
+	</div>
 
-    <div class="form-group">
-        <label asp-for="PublicationYear" class="control-label"></label>
-        <input asp-for="PublicationYear" class="form-control" />
-        <span asp-validation-for="PublicationYear" class="text-danger"></span>
-    </div>
+	<div class="form-group">
+		<label asp-for="PublicationYear" class="control-label"></label>
+		<input asp-for="PublicationYear" class="form-control" />
+		<span asp-validation-for="PublicationYear" class="text-danger"></span>
+	</div>
 
-    <div class="form-group">
-        <label asp-for="Price" class="control-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
+	<div class="form-group">
+		<label asp-for="Price" class="control-label"></label>
+		<input asp-for="Price" class="form-control" />
+		<span asp-validation-for="Price" class="text-danger"></span>
+	</div>
 
-    <div class="form-group">
-        <label asp-for="PublisherId" class="control-label">Publisher</label>
-        <select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId">
-            <option value="">-- Select Publisher --</option>
-        </select>
-        <span asp-validation-for="PublisherId" class="text-danger"></span>
-    </div>
+	<div class="form-group">
+		<label asp-for="ImageFile" class="control-label"></label>
+		<input asp-for="ImageFile" class="form-control" />
+		<span asp-validation-for="ImageFile" class="text-danger"></span>
+	</div>
 
-    <div class="form-group">
-        <label asp-for="CategoryId" class="control-label">Category</label>
-        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
-            <option value="">-- Select Category --</option>
-        </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="SelectedAuthorIds" class="control-label">Authors</label>
-        <select asp-for="SelectedAuthorIds" class="form-control" asp-items="ViewBag.AuthorIds" multiple="multiple"></select>
-        <span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
-    </div>
+	<div class="form-group">
+		<label asp-for="PublisherId" class="control-label">Publisher</label>
+		<select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId">
+			<option value="">-- Select Publisher --</option>
+		</select>
+		<span asp-validation-for="PublisherId" class="text-danger"></span>
+	</div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
+	<div class="form-group">
+		<label asp-for="CategoryId" class="control-label">Category</label>
+		<select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+			<option value="">-- Select Category --</option>
+		</select>
+		<span asp-validation-for="CategoryId" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="SelectedAuthorIds" class="control-label">Authors</label>
+		<select asp-for="SelectedAuthorIds" class="form-control" asp-items="ViewBag.AuthorIds" multiple="multiple"></select>
+		<span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create</button>
 </form>
 

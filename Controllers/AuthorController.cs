@@ -17,7 +17,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var getDatas = await _db.Authors.Where(item => !item.isDeleted).ToListAsync();
+            var getDatas = await _db.Authors.Where(item => !item.isDeleted).Include(x => x.Books).Include(x => x.Contact).ToListAsync();
             var mapToVM = getDatas.Select(item => new AuthorVM()
             {
                 ID = item.ID,
@@ -26,6 +26,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 Books = item.Books,
                 Contact = item.Contact,
                 FullName = item.FullName,
+                
 
             }).ToList();
             return View(mapToVM);
@@ -53,7 +54,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
             {
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                //Contact = contact,
+               // Contact = model.Contact,
                 //Books = model.Books,
                 FullName = model.FullName,
                 //isDeleted = false,
@@ -86,7 +87,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var author = await _db.Authors.FindAsync(id);
+            var author =  _db.Authors.Where(item => !item.isDeleted && item.ID==id).Include(x => x.Books).Include(x => x.Contact).ToList().FirstOrDefault();
             if (author == null)
             {
                 return NotFound();
@@ -97,7 +98,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 FullName = author.FullName,
                 Books = author.Books,
                 Contact = author.Contact,
-
+                
             };
             return View(model);
         }
@@ -110,17 +111,28 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 TempData["Error"] = "Input is not valid";
                 return View(model);
             }
-            var bookCategory = await _db.Authors.FindAsync(model.ID);
-            if (bookCategory == null)
+            var author = await _db.Authors.FindAsync(model.ID);
+            if (author == null)
             {
                 return NotFound();
             }
 
-            bookCategory.UpdatedDate = DateTime.Now;
-            bookCategory.FullName = model.FullName;
-            bookCategory.Contact = model.Contact;
-            bookCategory.Books = model.Books;
-            bookCategory.isDeleted = false;
+            var contact=_db.AuthorsContacts.Where(item => !item.isDeleted && item.AuthorId == author.ID).Include(x=>x.Author).ToList().FirstOrDefault();
+            if (contact == null)
+            {
+                return NotFound();
+            }
+            contact.Phone = model.Contact.Phone;
+            contact.Address = model.Contact.Address;
+            contact.Email = model.Contact.Email;
+            contact.UpdatedDate = DateTime.Now;
+            contact.isDeleted = false;
+
+
+            author.UpdatedDate = DateTime.Now;
+            author.FullName = model.FullName;
+            author.Contact = contact;          
+            
             await _db.SaveChangesAsync();
             TempData["Success"] = "Datas successfully modified";
 

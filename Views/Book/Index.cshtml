@@ -1,74 +1,99 @@
 ﻿@model List<PB503_Libary_Managment_System_ASP.NET.View_Models.BookVM.BookVM>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+	<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                Title
-            </th>
-            <th>
-                PublicationYear
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-                Publisher
-            </th>
-            <th>
-                CreatedDate
-            </th>
-            <th>
-                UpdatedDate
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PublicationYear)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publisher.Name)
-                </td>
+	<thead>
+		<tr>
+			<th>
+				Image
+			</th>
+			<th>
+				Title
+			</th>
+			<th>
+				PublicationYear
+			</th>
+			<th>
+				Price
+			</th>
+			<th>
+				Category
+			</th>
+			<th>
+				Publisher
+			</th>
+			<th>
+				Author(s)
+			</th>
+			<th>
+				CreatedDate
+			</th>
+			<th>
+				UpdatedDate
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					<img src="@item.ImageURL" alt="Book Image" style="width: 100px; height: 150px;" />
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Title)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PublicationYear)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Category.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Publisher.Name)
+				</td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UpdatedDate)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+
+				<td>
+					@if (item.Authors.Count > 1)
+					{
+						@foreach (var author in item.Authors)
+						{
+							@Html.DisplayFor(modelItem => author.FullName) <br />
+						}
+					}
+					else if (item.Authors.Count == 1)
+					{
+						@Html.DisplayFor(modelItem => item.Authors[0].FullName)
+					}
+
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.CreatedDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.UpdatedDate)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

@@ -11,7 +11,7 @@
 
     <div class="form-group">
         <label asp-for="Title" class="control-label"></label>
-        <input asp-for="Title" class="form-control" />
+        <input asp-for="Title" class="form-control"/>
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
@@ -44,10 +44,10 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label">Authors</label>
-        <select asp-for="Authors" class="form-control" asp-items="ViewBag.AuthorIds" multiple="multiple"></select>
+        <label asp-for="SelectedAuthorIds" class="control-label">Authors</label>
+        <select asp-for="SelectedAuthorIds" class="form-control" asp-items="ViewBag.AuthorIds" multiple="multiple"></select>
+        <span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
     </div>
-
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 

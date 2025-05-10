@@ -123,7 +123,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
             {
                 return NotFound();
             }
-            var model = new Publisher()
+            var model = new PublisherVM()
             {
                 ID = publisher.ID,
                 Name = publisher.Name,
@@ -133,7 +133,7 @@ namespace PB503_Libary_Managment_System_ASP.NET.Controllers
                 Address = publisher.Address,
                 Email = publisher.Email,
                 Phone = publisher.Phone,
-                isDeleted = publisher.isDeleted
+             
             };
             return View(model);
         }
