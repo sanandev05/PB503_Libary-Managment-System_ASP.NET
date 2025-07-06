@@ -38,3 +38,30 @@ PB503 Library Management System is a web application developed using **ASP.NET C
 
 ### Installation and Setup
 1. Clone the repository:
+git clone https://github.com/sanandev05/PB503_Libary-Managment-System_ASP.NET.git
+
+text
+2. Open the solution file `PB503_Libary Managment System_ASP.NET.sln` in Visual Studio.
+3. Configure your database connection string in `appsettings.json` or `appsettings.Development.json`.
+4. Open the Package Manager Console and run:
+Update-Database
+
+text
+This will apply migrations and create the database schema.
+5. Build and run the application (F5 or `dotnet run`).
+
+## Usage
+- Access the web app via the local server URL.
+- Use the interface to add new books, manage borrowing and returns.
+- Admin users can manage users and library inventory.
+- The system tracks book availability and borrowing status.
+
+## Contributing
+Contributions are welcome. Please fork the repository and submit pull requests with improvements or bug fixes.
+
+## License
+No license specified. Please contact the repository owner for details.
+
+---
+
+*This README is created based on the repository structure and common practices for ASP.NET Core MVC Library Management Systems.*
